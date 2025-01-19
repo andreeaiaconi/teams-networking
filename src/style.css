@@ -1,0 +1,57 @@
+html {
+  height: 100%; /* to make it full page (body must also be 100%) */
+}
+body {
+  min-height: 100%; /* in case the body will contain more content that wont just fit on a page */
+  margin: 0; /* to remove default margin to make sure it can be min-100% */
+  display: flex; /* to make sure the content is centered */
+  flex-direction: column;
+  background: rgb(232, 252, 244);
+}
+body > section {
+  /* only applies to the first section*/
+  flex: 1; /* to make sure it takes the remaining space */
+  padding: 15px;
+}
+header {
+  background: url(images/DevTools\ Image.png);
+}
+#header-wrapper {
+  background: linear-gradient(45deg, rgb(105 139 133), transparent);
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+}
+#my-picture {
+  adding: 5px;
+  width: 108px;
+  height: 108px;
+}
+header img { /* this targets all the images in the header (theres only one) */
+  border-radius: 50%;
+  margin: 4px;
+  background-color: #0000006e;;
+
+}
+#header-info {
+  padding: 10px;
+    text-shadow: 1px 1px 2px #ded7d7;
+}
+
+h1 {
+  color: rgb(37, 70, 73);
+  margin: 5px 0;
+}
+h2 {
+  color: rgb(37, 70, 73);
+  margin: 5px 0;
+  font-weight: 100;
+    font-size: 1.2em;
+}
+
+footer {
+  background-color: rgb(114, 176, 137);
+  color: white;
+  text-align: center;
+  padding: 7px;
+}

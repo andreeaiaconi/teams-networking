@@ -1,3 +1,3 @@
-import "./styles.css";
+import "./style.css";
 
 console.info("Start App");
