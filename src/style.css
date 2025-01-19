@@ -6,7 +6,7 @@ body {
   margin: 0; /* to remove default margin to make sure it can be min-100% */
   display: flex; /* to make sure the content is centered */
   flex-direction: column;
-  background: rgb(232, 252, 244);
+  background: rgb(230 230 230);
 }
 body > section {
   /* only applies to the first section*/
@@ -47,6 +47,18 @@ h2 {
   margin: 5px 0;
   font-weight: 100;
     font-size: 1.2em;
+}
+.tbar {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: stretch;
+}
+.tfill {
+  flex: 1; 
+  /* will take as much space as it needs */
+}
+.tbar label {
+    padding: 0 5px;
 }
 #teamsTable {
   width: 100%;
