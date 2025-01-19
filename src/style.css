@@ -23,7 +23,7 @@ header {
   align-items:center;
 }
 #my-picture {
-  adding: 5px;
+  padding: 5px;
   width: 108px;
   height: 108px;
 }
@@ -48,7 +48,26 @@ h2 {
   font-weight: 100;
     font-size: 1.2em;
 }
+#teamsTable {
+  width: 100%;
+  border-collapse: collapse;
+  padding: 5px;
+}
+#teamsTable th,
+#teamsTable td {
+  border: 1px, solid #0000006e;
+}
 
+#teamsTable th {
+  background-color: rgb(114, 176, 137); 
+  color: rgb(37, 70, 73)
+}
+#teamsTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+#teamsTable tr:nth-child(odd) {
+    background-color: #e1e7dc;
+}
 footer {
   background-color: rgb(114, 176, 137);
   color: white;
