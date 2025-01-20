@@ -83,7 +83,16 @@ h2 {
 #teamsTable input {
   width: 100%;
 }
-
+.delete-btn { 
+  display:none;
+}
+.action-btn {
+  cursor: pointer;
+  min-width: 35px;
+}
+#teamsTable tr:hover .delete-btn {
+  display: inline-block;
+}
 #teamsTable tfoot input:not([type="image" i]) {
     box-sizing: border-box;
 }

@@ -11,9 +11,20 @@ function createTeamRequest(team) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(team)
-  }).then(response => response.json());
+  }).then(r => r.json());
 }
-
+function deleteTeamRequest(id) {
+  return fetch("http://localhost:3000/teams-json/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id: id })
+    // this "then" means: "when you finish the request
+    // please call the function and give the result to
+    //  the next one"
+  }).then(r => r.json());
+}
 //  gets team as a json object and returns it as a string
 function getTeamAsHTML(team) {
   return `<tr>
@@ -21,7 +32,9 @@ function getTeamAsHTML(team) {
             <td>${team.members}</td>
             <td>${team.name}</td>
             <td>${team.url}</td>
-            <td>x</td>
+            <td>
+              <button type="button" data-id="${team.id}" class="action-btn delete-btn">♻️</button>
+            </td>
           </tr>`;
 }
 // function to map values and inject them into the html
@@ -41,7 +54,7 @@ function loadTeams() {
     }
   })
     // then wait for the json response
-    .then(response => response.json())
+    .then(r => r.json())
     .then(teams => {
       renderTeams(teams);
       //  then print value in console to see if the fetch was successful
@@ -63,7 +76,7 @@ function onSubmit(e) {
     name: name,
     url: url
   };
-// chaining
+  // chaining
   createTeamRequest(team).then(status => {
     //   console.warn("status", status);
     if (status.success) {
@@ -75,6 +88,16 @@ function onSubmit(e) {
 function initEvents() {
   // select the element's id and add an event to it
   $("#teamsForm").addEventListener(`submit`, onSubmit);
+  $("#teamsTable tbody").addEventListener("click", e => {
+    if (e.target.matches("button.delete-btn")) {
+      const id = e.target.dataset.id;
+      deleteTeamRequest(id).then(status => {
+        if (status.success) {
+          window.location.reload();
+        }
+      });
+    }
+  });
 }
 // calling the functions
 initEvents();
