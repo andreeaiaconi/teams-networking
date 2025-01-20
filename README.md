@@ -6,10 +6,10 @@ In Current Demo you'll see some of projects created by my students. You can also
 <!-- ## means H2 -->
 ## 💠 Features & Usage
 - [x] Teams Networking (CRUD*) Operations
-    - [ ] Create
-    - [x] Read
-    - [ ] Update
-    - [ ] Delete
+    - [ ] **C**reate
+    - [x] **R**ead
+    - [ ] **U**pdate
+    - [ ] **D**elete
 - [x] Search 
 - [x] Loading mask
 
