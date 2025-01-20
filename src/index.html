@@ -24,22 +24,52 @@
         <input type="search" name="search" id="search" placeholder="Search..." />
         <label for="search">🔎</label>
       </div>
-      <table id="teamsTable">
-        <thead>
-          <!-- Groups the table header rows -->
-          <tr>
-            <!-- Table Row -->
-            <th>Promotion</th> 
-            <!-- Represents individual header cells -->
-            <th>Members</th>
-            <th>Project Name</th>
-            <th>Project URL</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
+      <form action="secretary.html" method="get">
+        <table id="teamsTable">
+          <colgroup>
+            <!-- span 1 meaning this column is only meant for one single row -->
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+            <!-- now, even if we make the window smaller, the last column (with the buttons will always hold this width to accomodate the buttons) -->
+            <col span="1" style="width: 80px" />
+          </colgroup>
+          <thead>
+            <!-- Groups the table header rows -->
+            <tr>
+              <!-- Table Row -->
+              <th>Promotion</th>
+              <!-- Represents individual header cells -->
+              <th>Members</th>
+              <th>Project Name</th>
+              <th>Project URL</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <input required type="text" name="promotion" id="promotion" placeholder="Enter Promotion" />
+              </td>
+              <td>
+                <input required type="text" name="members" id="members" placeholder="Enter Members" />
+              </td>
+              <td>
+                <input required type="text" name="name" id="name" placeholder="Enter Name" />
+              </td>
+              <td>
+                <input required type="text" name="url" id="url" placeholder="Enter Project URL" />
+              </td>
+              <td>
+                <button type="submit">💾</button>
+                <button type="reset">↻</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
     </section>
     <footer>📃 API Docs | 👩‍💻 Source Code</footer>
   </body>

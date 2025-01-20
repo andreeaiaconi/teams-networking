@@ -80,6 +80,13 @@ h2 {
 #teamsTable tr:nth-child(odd) {
     background-color: #e1e7dc;
 }
+#teamsTable input {
+  width: 100%;
+}
+
+#teamsTable tfoot input:not([type="image" i]) {
+    box-sizing: border-box;
+}
 footer {
   background-color: rgb(114, 176, 137);
   color: white;
