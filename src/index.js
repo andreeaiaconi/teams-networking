@@ -51,7 +51,7 @@ function getTeamAsHTML(team) {
             <td>${team.url}</td>
             <td>
               <button type="button" data-id="${team.id}" class="action-btn edit-btn">&#9998;</button>
-              <button type="button" data-id="${team.id}" class="action-btn delete-btn">♻️</button>
+              <button type="button" data-id="${team.id}" class="action-btn delete-btn">🗑️</button>
             </td>
           </tr>`;
 }
@@ -139,7 +139,12 @@ function getTeamValues() {
 
 function initEvents() {
   // select the element's id and add an event to it
-  $("#teamsForm").addEventListener(`submit`, onSubmit);
+  $("#teamsForm").addEventListener("submit", onSubmit);
+  $("#teamsForm").addEventListener("reset", () => {
+    console.warn("reset", editId);
+    editId = undefined;
+  });
+
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
       const id = e.target.dataset.id;
