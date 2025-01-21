@@ -19,21 +19,21 @@
     </header>
     <section id="main section">
       <div class="tbar">
-        <button>❌ Remove Selected</button>
+        <button id="removeSelected">❌ Remove selected</button>
         <div class="tfill"></div>
-        <input type="search" name="search" id="search" placeholder="Search..." />
+        <input type="search" id="search" placeholder="Search..." />
         <label for="search">🔎</label>
       </div>
       <form id="teamsForm" method="get">
         <table id="teamsTable">
           <colgroup>
             <!-- span 1 meaning this column is only meant for one single row -->
-            <col span="1" />
-            <col span="1" />
-            <col span="1" />
-            <col span="1" />
-            <!-- now, even if we make the window smaller, the last column (with the buttons will always hold this width to accomodate the buttons) -->
-            <col span="1" style="width: 80px" />
+            <col span="1" >
+            <col span="1" style="width: 125px">
+            <col span="1" >
+            <col span="1" >
+            <col class="table-actions">
+        
           </colgroup>
           <thead>
             <!-- Groups the table header rows -->
@@ -63,8 +63,8 @@
                 <input required type="text" name="url" id="url" placeholder="Enter Project URL" />
               </td>
               <td>
-                <button type="submit">💾</button>
-                <button type="reset">↻</button>
+                <button class="action-btn" type="submit">💾</button>
+                <button class="action-btn" type="reset">↻</button>
               </td>
             </tr>
           </tfoot>

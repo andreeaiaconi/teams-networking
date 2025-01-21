@@ -83,18 +83,29 @@ h2 {
 #teamsTable input {
   width: 100%;
 }
-.delete-btn { 
-  display:none;
+.table.actions {
+  width: 90px;
+}
+
+#teamsTable tfoot input:not([type="image" i]) {
+    box-sizing: border-box;
+}
+
+.table-actions {
+  width: 90px;
 }
 .action-btn {
   cursor: pointer;
-  min-width: 35px;
+  min-width: 34px;
 }
-#teamsTable tr:hover .delete-btn {
+.edit-btn { 
+  display:none;
+}
+.delete-btn { 
+  display:none;
+}
+#teamsTable tr:hover .action-btn {
   display: inline-block;
-}
-#teamsTable tfoot input:not([type="image" i]) {
-    box-sizing: border-box;
 }
 footer {
   background-color: rgb(114, 176, 137);
