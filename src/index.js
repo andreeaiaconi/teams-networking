@@ -1,9 +1,11 @@
 import "./style.css";
 
+//  undefined variable
 let editId;
 //  this value will be updated to another value every time
 //  we do a laod
 let allTeams = [];
+
 
 function $(selector) {
   return document.querySelector(selector);
@@ -41,7 +43,7 @@ function updateTeamRequest(team) {
     body: JSON.stringify(team)
   }).then(r => r.json());
 }
-
+// pure function
 //  gets team as a json object and returns it as a string
 function getTeamAsHTML(team) {
   const url = team.url;
@@ -80,6 +82,8 @@ function loadTeams() {
     .then(teams => {
       allTeams = teams;
       renderTeams(teams);
+      // stopping timer
+      console.timeEnd("app-ready");
       //  then print value in console to see if the fetch was successful
       // console.warn("teams?", teams);
       // then actually print the value where you need it on the page
@@ -105,9 +109,12 @@ function onSubmit(e) {
   } else {
     // chaining
     createTeamRequest(team).then(status => {
-      //   console.warn("status", status);
+      console.warn("status", status, team);
       if (status.success) {
-        window.location.reload();
+        team.id = status.id;
+        allTeams.push(team);
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
       }
     });
   }
@@ -140,10 +147,10 @@ function getTeamValues() {
   };
 }
 
-function filterElements(search) {
+function filterElements(teams, search) {
   search = search.toLowerCase();
   // console.warn("search %o", search);
-  return allTeams.filter(team => {
+  return teams.filter(team => {
     return (
       team.promotion.toLowerCase().includes(search) ||
       team.members.toLowerCase().includes(search) ||
@@ -157,7 +164,7 @@ function initEvents() {
   $("#search").addEventListener("input", e => {
     const search = e.target.value;
     // getting teams that match the search
-    const teams = filterElements(search);
+    const teams = filterElements(allTeams, search);
     renderTeams(teams);
   });
 
@@ -173,7 +180,8 @@ function initEvents() {
       const id = e.target.dataset.id;
       deleteTeamRequest(id).then(status => {
         if (status.success) {
-          window.location.reload();
+          allTeams = allTeams.filter(team => team.id !== id);
+          renderTeams(allTeams);
         }
       });
     } else if (e.target.matches("button.edit-btn")) {
