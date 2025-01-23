@@ -6,7 +6,6 @@ let editId;
 //  we do a laod
 let allTeams = [];
 
-
 function $(selector) {
   return document.querySelector(selector);
 }
@@ -45,24 +44,41 @@ function updateTeamRequest(team) {
 }
 // pure function
 //  gets team as a json object and returns it as a string
-function getTeamAsHTML(team) {
-  const url = team.url;
-  const displayUrl = url.startsWith("https://github.com/") ? url.substring(19): url
+function getTeamAsHTML({ id, promotion, members, name, url }) {
+  const displayUrl = url.startsWith("https://github.com/") ? url.substring(19) : url;
   return `<tr>
-    <td>${team.promotion}</td>
-    <td>${team.members}</td>
-    <td>${team.name}</td>
+    <td>${promotion}</td>
+    <td>${members}</td>
+    <td>${name}</td>
     <td>
       <a href="${url}" target="_blank">${displayUrl}</a>
     </td>
     <td>
-      <button type="button" data-id="${team.id}" class="action-btn edit-btn">&#9998;</button>
-      <button type="button" data-id="${team.id}" class="action-btn delete-btn">🗑️</button>
+      <button type="button" data-id="${id}" class="action-btn edit-btn">&#9998;</button>
+      <button type="button" data-id="${id}" class="action-btn delete-btn">🗑️</button>
     </td>
     </tr>`;
 }
+function areTeamsEqual(renderedTeams, teams) {
+  if (renderedTeams === teams) {
+    return true;
+  }
+  if (renderedTeams.length === teams.length) {
+    const eq = renderedTeams.every((team, i) => team === teams[i]);
+    if (eq) {
+      return true;
+    }
+  }
+  return false;
+}
+
+let renderedTeams = [];
 // function to map values and inject them into the html
 function renderTeams(teams) {
+  if (areTeamsEqual(renderedTeams, teams)) {
+    return;
+  }
+  renderedTeams = teams;
   const teamsHtml = teams.map(getTeamAsHTML);
 
   $("#teamsTable tbody").innerHTML = teamsHtml.join("");
@@ -82,6 +98,9 @@ function loadTeams() {
     .then(teams => {
       allTeams = teams;
       renderTeams(teams);
+      renderTeams(teams);
+      renderTeams(teams);
+
       // stopping timer
       console.timeEnd("app-ready");
       //  then print value in console to see if the fetch was successful
@@ -89,6 +108,22 @@ function loadTeams() {
       // then actually print the value where you need it on the page
     });
 }
+
+function updateTeam(teams, team) {
+  return teams.map(t => {
+    if (t.is === team.id) {
+      // console.info("edited", t, team);
+      return {
+        ...t,
+        ...team
+      };
+    }
+    return t;
+  });
+  renderTeams(allTeams);
+  $("#teamsForm").reset();
+}
+
 // function to submit the form
 function onSubmit(e) {
   //   Prevents the default form submission behavior (i.e., stops the page
@@ -101,9 +136,11 @@ function onSubmit(e) {
     team.id = editId;
     console.warn("should we edit?", editId, team);
     updateTeamRequest(team).then(status => {
-      console.warn("status", status);
+      // console.warn("status", status);
       if (status.success) {
-        window.location.reload();
+        allTeams = updateTeam(allTeams, team);
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
       }
     });
   } else {
@@ -112,7 +149,10 @@ function onSubmit(e) {
       console.warn("status", status, team);
       if (status.success) {
         team.id = status.id;
-        allTeams.push(team);
+        // allTeams = allTeams.map(team => team);
+        // allTeams.push(team);
+        // this adds the new team at the end of the list of all teams (at the bottom of the table)
+        allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
@@ -127,11 +167,11 @@ function startEdit(id) {
   setTeamValues(team);
 }
 
-function setTeamValues(team) {
-  $("input[name=promotion]").value = team.promotion;
-  $("input[name=members]").value = team.members;
-  $("input[name=name]").value = team.name;
-  $("input[name=url]").value = team.url;
+function setTeamValues({ promotion, members, name, url }) {
+  $("input[name=promotion]").value = promotion;
+  $("input[name=members]").value = members;
+  $("input[name=name]").value = name;
+  $("input[name=url]").value = url;
 }
 
 function getTeamValues() {
@@ -150,12 +190,12 @@ function getTeamValues() {
 function filterElements(teams, search) {
   search = search.toLowerCase();
   // console.warn("search %o", search);
-  return teams.filter(team => {
+  return teams.filter(({ promotion, members, name, url }) => {
     return (
-      team.promotion.toLowerCase().includes(search) ||
-      team.members.toLowerCase().includes(search) ||
-      team.name.toLowerCase().includes(search) ||
-      team.url.toLowerCase().includes(search)
+      promotion.toLowerCase().includes(search) ||
+      members.toLowerCase().includes(search) ||
+      name.toLowerCase().includes(search) ||
+      url.toLowerCase().includes(search)
     );
   });
 }
@@ -177,7 +217,9 @@ function initEvents() {
 
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
-      const id = e.target.dataset.id;
+      // const id = e.target.dataset.id;
+      const { id } = e.target.dataset;
+
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           allTeams = allTeams.filter(team => team.id !== id);
@@ -185,7 +227,7 @@ function initEvents() {
         }
       });
     } else if (e.target.matches("button.edit-btn")) {
-      const id = e.target.dataset.id;
+      const { id } = e.target.dataset;
       startEdit(id);
     }
   });
