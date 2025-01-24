@@ -2,6 +2,8 @@
 // this only imports the debounce file instead of the whole lodash library, to take up less space
 import debounce from "lodash/debounce";
 import "./style.css";
+import { $ } from "./utilities";
+import { loadTeamsRequest, createTeamRequest, updateTeamRequest, deleteTeamRequest } from "./middleware";
 
 //  undefined variable
 let editId;
@@ -9,50 +11,6 @@ let editId;
 //  we do a laod
 let allTeams = [];
 
-function $(selector) {
-  return document.querySelector(selector);
-}
-function loadTeamsRequest() {
-  return fetch("http://localhost:3000/teams-json", {
-    // getting values from this server
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(r => r.json());
-}
-function createTeamRequest(team) {
-  return fetch("http://localhost:3000/teams-json/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(team)
-  }).then(r => r.json());
-}
-function deleteTeamRequest(id) {
-  return fetch("http://localhost:3000/teams-json/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ id: id })
-    // this "then" means: "when you finish the request
-    // please call the function and give the result to
-    //  the next one"
-  }).then(r => r.json());
-}
-
-function updateTeamRequest(team) {
-  // PUT teams-json/update
-  return fetch("http://localhost:3000/teams-json/update", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(team)
-  }).then(r => r.json());
-}
 // pure function
 //  gets team as a json object and returns it as a string
 function getTeamAsHTML({ id, promotion, members, name, url }) {
