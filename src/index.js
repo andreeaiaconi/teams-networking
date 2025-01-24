@@ -9,7 +9,15 @@ let allTeams = [];
 function $(selector) {
   return document.querySelector(selector);
 }
-
+function loadTeamsRequest() {
+  return fetch("http://localhost:3000/teams-json", {
+    // getting values from this server
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
 function createTeamRequest(team) {
   return fetch("http://localhost:3000/teams-json/create", {
     method: "POST",
@@ -83,30 +91,12 @@ function renderTeams(teams) {
 
   $("#teamsTable tbody").innerHTML = teamsHtml.join("");
 }
-// fetching information from the teams.json file
-function loadTeams() {
-  // load json file
-  fetch("http://localhost:3000/teams-json", {
-    // getting values from this server
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    // then wait for the json response
-    .then(r => r.json())
-    .then(teams => {
-      allTeams = teams;
-      renderTeams(teams);
-      renderTeams(teams);
-      renderTeams(teams);
 
-      // stopping timer
-      console.timeEnd("app-ready");
-      //  then print value in console to see if the fetch was successful
-      // console.warn("teams?", teams);
-      // then actually print the value where you need it on the page
-    });
+async function loadTeams() {
+  const teams = await loadTeamsRequest();
+
+  allTeams = teams;
+  renderTeams(teams);
 }
 
 function updateTeam(teams, team) {
@@ -120,12 +110,10 @@ function updateTeam(teams, team) {
     }
     return t;
   });
-  renderTeams(allTeams);
-  $("#teamsForm").reset();
 }
 
 // function to submit the form
-function onSubmit(e) {
+async function onSubmit(e) {
   //   Prevents the default form submission behavior (i.e., stops the page
   // from reloading when the form is submitted)
   e.preventDefault();
@@ -135,14 +123,13 @@ function onSubmit(e) {
   if (editId) {
     team.id = editId;
     console.warn("should we edit?", editId, team);
-    updateTeamRequest(team).then(status => {
-      // console.warn("status", status);
-      if (status.success) {
-        allTeams = updateTeam(allTeams, team);
-        renderTeams(allTeams);
-        $("#teamsForm").reset();
-      }
-    });
+
+    const status = await updateTeamRequest(team);
+    if (status.success) {
+      allTeams = updateTeam(allTeams, team);
+      renderTeams(allTeams);
+      $("#teamsForm").reset();
+    }
   } else {
     // chaining
     createTeamRequest(team).then(status => {
@@ -234,4 +221,6 @@ function initEvents() {
 }
 // calling the functions
 initEvents();
-loadTeams();
+loadTeams().then(() => {
+  console.timeEnd("app-ready");
+});
