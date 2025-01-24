@@ -5,10 +5,10 @@ import "./style.css";
 import { $, mask, unmask } from "./utilities";
 import { loadTeamsRequest, createTeamRequest, updateTeamRequest, deleteTeamRequest } from "./middleware";
 
+// global variables 
 //  undefined variable
 let editId;
 //  this value will be updated to another value every time
-//  we do a laod
 let allTeams = [];
 
 const formSelector = "#teamsForm"; 
@@ -68,7 +68,6 @@ async function loadTeams() {
 function updateTeam(teams, team) {
   return teams.map(t => {
     if (t.is === team.id) {
-      // console.info("edited", t, team);
       return {
         ...t,
         ...team
@@ -89,7 +88,6 @@ async function onSubmit(e) {
   
   if (editId) {
     team.id = editId;
-    console.warn("should we edit?", editId, team);
 
     const status = await updateTeamRequest(team);
     if (status.success) {
@@ -101,11 +99,8 @@ async function onSubmit(e) {
   } else {
     // chaining
     createTeamRequest(team).then(status => {
-      console.warn("status", status, team);
       if (status.success) {
         team.id = status.id;
-        // allTeams = allTeams.map(team => team);
-        // allTeams.push(team);
         // this adds the new team at the end of the list of all teams (at the bottom of the table)
         allTeams = [...allTeams, team];
         renderTeams(allTeams);
@@ -119,7 +114,6 @@ async function onSubmit(e) {
 function startEdit(id) {
   editId = id;
   const team = allTeams.find(team => team.id === id);
-  console.warn("edit", id, team);
   setTeamValues(team);
 }
 
@@ -145,7 +139,6 @@ function getTeamValues() {
 
 function filterElements(teams, search) {
   search = search.toLowerCase();
-  // console.warn("search %o", search);
   return teams.filter(({ promotion, members, name, url }) => {
     return (
       promotion.toLowerCase().includes(search) ||
@@ -188,7 +181,6 @@ function initEvents() {
   // select the element's id and add an event to it
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsForm").addEventListener("reset", () => {
-    console.warn("reset", editId);
     editId = undefined;
   });
 
@@ -217,6 +209,5 @@ mask(formSelector);
 
 mask(formSelector);
 loadTeams().then(() => {
-  console.timeEnd("app-ready");
   unmask("#teamsForm");
 });
