@@ -80,7 +80,7 @@ h2 {
 #teamsTable tr:nth-child(odd) {
   background-color: #e1e7dc;
 }
-#teamsTable input {
+#teamsTable input:not([type="checkbox" ]) {
   width: 100%;
 }
 .table.actions {
@@ -89,6 +89,12 @@ h2 {
 
 #teamsTable tfoot input:not([type="image" i]) {
   box-sizing: border-box;
+}
+.select-all-column {
+  width: 40 px;
+}
+.select-row {
+  text-align: center;
 }
 
 .table-actions {

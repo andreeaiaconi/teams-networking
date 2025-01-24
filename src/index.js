@@ -18,6 +18,9 @@ const formSelector = "#teamsForm";
 function getTeamAsHTML({ id, promotion, members, name, url }) {
   const displayUrl = url.startsWith("https://github.com/") ? url.substring(19) : url;
   return `<tr>
+    <td class "select-row">
+      <input type="checkbox" name="selected" value="${id}" />
+    </td>
     <td>${promotion}</td>
     <td>${members}</td>
     <td>${name}</td>
@@ -108,7 +111,7 @@ async function onSubmit(e) {
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
-      unmask(formSelector);
+      mask(formSelector);
     });
   }
 }
@@ -153,7 +156,20 @@ function filterElements(teams, search) {
   });
 }
 
+async function removeSelected() {
+  // because mask is the id of the section we're working on from html
+  mask("#main");
+
+  const selected = document.querySelectorAll("input[name=selected]:checked");
+  const ids = [...selected].map(input => input.value);
+  const promises = ids.map(id => deleteTeamRequest(id)); 
+  const statuses = await Promise.allSettled(promises); 
+  await loadTeams(); 
+  unmask("#main");
+}
+
 function initEvents() {
+  $("#removeSelected").addEventListener("click", removeSelected);
   $("#search").addEventListener(
     "input",
     debounce(e => {
@@ -163,6 +179,11 @@ function initEvents() {
       renderTeams(teams);
     }, 200)
   );
+   $("#selectAll").addEventListener("input", e => {
+    document.querySelectorAll("input[name=selected]").forEach(check => {
+      check.checked = e.target.checked;
+    }) ; 
+   });
 
   // select the element's id and add an event to it
   $("#teamsForm").addEventListener("submit", onSubmit);

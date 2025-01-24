@@ -20,7 +20,7 @@
         </div>
       </div>
     </header>
-    <section id="main section">
+    <section id="main">
       <div class="tbar">
         <button id="removeSelected">&#10008; Remove selected</button>
         <div class="tfill"></div>
@@ -31,17 +31,19 @@
         <table id="teamsTable">
           <colgroup>
             <!-- span 1 meaning this column is only meant for one single row -->
-            <col span="1" >
-            <col span="1" style="width: 125px">
-            <col span="1" >
-            <col span="1" >
-            <col class="table-actions">
-        
+            <col class="select-all-column" />
+            <col />
+            <col />
+            <col />
+            <col class="table-actions" />
           </colgroup>
           <thead>
             <!-- Groups the table header rows -->
             <tr>
               <!-- Table Row -->
+              <th>
+                <input type="checkbox" name="selectAll" id="selectAll" />
+              </th>
               <th>Promotion</th>
               <!-- Represents individual header cells -->
               <th>Members</th>
@@ -53,6 +55,7 @@
           <tbody></tbody>
           <tfoot>
             <tr>
+              <td></td>
               <td>
                 <input required type="text" name="promotion" id="promotion" placeholder="Enter Promotion" />
               </td>
