@@ -1,3 +1,6 @@
+// "import { debounce } from "lodash";" is to import the whole lodash library
+// this only imports the debounce file instead of the whole lodash library, to take up less space
+import debounce from "lodash/debounce";
 import "./style.css";
 
 //  undefined variable
@@ -188,12 +191,15 @@ function filterElements(teams, search) {
 }
 
 function initEvents() {
-  $("#search").addEventListener("input", e => {
-    const search = e.target.value;
-    // getting teams that match the search
-    const teams = filterElements(allTeams, search);
-    renderTeams(teams);
-  });
+  $("#search").addEventListener(
+    "input",
+    debounce(e => {
+      const search = e.target.value;
+      // getting teams that match the search
+      const teams = filterElements(allTeams, search);
+      renderTeams(teams);
+    }, 200)
+  );
 
   // select the element's id and add an event to it
   $("#teamsForm").addEventListener("submit", onSubmit);
