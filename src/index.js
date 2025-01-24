@@ -2,7 +2,7 @@
 // this only imports the debounce file instead of the whole lodash library, to take up less space
 import debounce from "lodash/debounce";
 import "./style.css";
-import { $ } from "./utilities";
+import { $, mask, unmask } from "./utilities";
 import { loadTeamsRequest, createTeamRequest, updateTeamRequest, deleteTeamRequest } from "./middleware";
 
 //  undefined variable
@@ -10,6 +10,8 @@ let editId;
 //  this value will be updated to another value every time
 //  we do a laod
 let allTeams = [];
+
+const formSelector = "#teamsForm"; 
 
 // pure function
 //  gets team as a json object and returns it as a string
@@ -79,8 +81,9 @@ async function onSubmit(e) {
   // from reloading when the form is submitted)
   e.preventDefault();
 
+  mask(formSelector);
   const team = getTeamValues();
-
+  
   if (editId) {
     team.id = editId;
     console.warn("should we edit?", editId, team);
@@ -91,6 +94,7 @@ async function onSubmit(e) {
       renderTeams(allTeams);
       $("#teamsForm").reset();
     }
+    unmask(formSelector);
   } else {
     // chaining
     createTeamRequest(team).then(status => {
@@ -104,6 +108,7 @@ async function onSubmit(e) {
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
+      unmask(formSelector);
     });
   }
 }
@@ -170,12 +175,13 @@ function initEvents() {
     if (e.target.matches("button.delete-btn")) {
       // const id = e.target.dataset.id;
       const { id } = e.target.dataset;
-
+      mask(formSelector);
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           allTeams = allTeams.filter(team => team.id !== id);
           renderTeams(allTeams);
         }
+        unmask(formSelector);
       });
     } else if (e.target.matches("button.edit-btn")) {
       const { id } = e.target.dataset;
@@ -185,6 +191,11 @@ function initEvents() {
 }
 // calling the functions
 initEvents();
+
+mask(formSelector);
+
+mask(formSelector);
 loadTeams().then(() => {
   console.timeEnd("app-ready");
+  unmask("#teamsForm");
 });
