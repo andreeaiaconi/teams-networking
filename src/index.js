@@ -66,15 +66,19 @@ async function loadTeams() {
 }
 
 function updateTeam(teams, team) {
-  return teams.map(t => {
-    if (t.is === team.id) {
-      return {
+  console.log("Updating team:", team); // Debugging
+  const updatedTeams = teams.map(t => {
+    if (t.id === team.id) {
+      console.log("Found team to update:", t); // Debugging
+      const updatedTeam = {
         ...t,
         ...team
       };
+      return updatedTeam;
     }
     return t;
   });
+  return updatedTeams;
 }
 
 // function to submit the form
@@ -106,7 +110,7 @@ async function onSubmit(e) {
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
-      mask(formSelector);
+      unmask(formSelector);
     });
   }
 }
