@@ -1,9 +1,8 @@
-<!-- # means H1 -->
-# Teams Networking
+# NIcolae Matei's Udemy Web Development Course 
+
+## Teams Networking
 Teams job related networking (members, project name, project url)
 
-In Current Demo you'll see some of projects created by my students. You can also find new project ideas
-<!-- ## means H2 -->
 ## 💠 Features & Usage
 - [x] Teams Networking (CRUD*) Operations
     - [x] **C**reate
